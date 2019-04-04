@@ -19,3 +19,12 @@
     &.leisure { fill: lighten($teal, 35%); }
     &.exceptional { fill: $teal; }
 }
+:host /deep/ .timetick {
+    line {
+        stroke: darken($light, 25%);
+    }
+    text {
+        fill: darken($light, 25%);
+    }
+}
+

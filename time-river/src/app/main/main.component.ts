@@ -43,6 +43,21 @@ export class MainComponent implements OnInit, AfterViewInit {
     const gDayBackgrounds = gDayBackgroundLayer.append('rect')
       .attr('width', rectangleWidth).attr('height', rectangleHeight)
       .classed('background', true)
+    const gDayBackgroundTickLayer = gDayBackgroundLayer.append('g');
+    const gDayTicks = gDayBackgroundTickLayer.selectAll('text').data(Array.from(Array(23)).map((_, i) => i + 1)).enter().append('g');
+    gDayTicks
+      .attr('transform', d => translate(0, d / 24 * rectangleHeight))
+      .classed('timetick', true)
+    gDayTicks.append('line')
+      .attr('x1', 20).attr('x2', rectangleWidth / 2 - 10).attr('y1', 0).attr('y2', 0)
+    gDayTicks.append('line')
+      .attr('x1', rectangleWidth / 2 + 10).attr('x2', rectangleWidth - 20).attr('y1', 0).attr('y2', 0)
+    const gDayTickTexts = gDayTicks.append('text');
+    gDayTickTexts
+      .attr('transform', d => translate(rectangleWidth / 2, 4))
+      .attr('font-size', 12)
+      .style('text-anchor', 'middle')
+      .text(d => d);
     const gDayForegroundLayer = gDay.append('g');
     gDayForegroundLayer.attr('transform', translate(0, metaHeight))
     const gDayRects = gDayForegroundLayer.selectAll('rect').data(d => d.records).enter().append('rect');
