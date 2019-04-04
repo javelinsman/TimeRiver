@@ -12,6 +12,16 @@ export class TimeRecordService {
   }
 
   getDailyData() {
-    return this.data.split('\n');
+    return this.data.split('>').filter(s => s.trim().length).map(dayRaw => {
+      return dayRaw.split('\n').filter(s => s.trim().length).slice(1).map(taskRaw => {
+        const args = taskRaw.split(' ');
+        return {
+          from: +args[0],
+          to: +args[2],
+          title: args[3],
+          tags: args.slice(4),
+        }
+      })
+    });
   }
 }

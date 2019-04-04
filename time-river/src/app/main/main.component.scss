@@ -1,0 +1,14 @@
+@import "../../styles.scss";
+
+:host /deep/ .background {
+    fill: darken($light, 1%);
+    stroke: lighten($dark, 35%);
+    stroke-width: 1px;
+}
+:host /deep/ .rectangle {
+    fill: darken($light, 10%);
+
+    &.highlighted {
+        fill: lighten($primary, 35%);
+    }
+}
