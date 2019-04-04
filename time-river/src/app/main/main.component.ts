@@ -27,31 +27,48 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.container = d3.select(this.rectanglesDiv.nativeElement).append('svg');
-    this.container.attr('width', 5000).attr('height', 1000)
     this.drawRectangles();
   }
 
   drawRectangles() {
-    const rectangleWidth = 300, rectangleHeight = 650;
+    const rectangleWidth = 150, rectangleHeight = 650;
+    const metaHeight = 70;
+
+    this.container.attr('width', rectangleWidth * this.dailyData.length + 50).attr('height', metaHeight + rectangleHeight)
 
     const gDay = this.container.selectAll('g').data(this.dailyData).enter().append('g');
     gDay.attr('transform', (d, i) => translate(rectangleWidth * i, 0));
     const gDayBackgroundLayer = gDay.append('g');
-    const gDayBackgrounds = gDayBackgroundLayer.append('rect');
-    gDayBackgrounds
+    gDayBackgroundLayer.attr('transform', translate(0, metaHeight))
+    const gDayBackgrounds = gDayBackgroundLayer.append('rect')
       .attr('width', rectangleWidth).attr('height', rectangleHeight)
       .classed('background', true)
     const gDayForegroundLayer = gDay.append('g');
-    const gDayRects = gDayForegroundLayer.selectAll('rect').data(d => d).enter().append('rect');
+    gDayForegroundLayer.attr('transform', translate(0, metaHeight))
+    const gDayRects = gDayForegroundLayer.selectAll('rect').data(d => d.records).enter().append('rect');
     gDayRects.attr('transform', (d, i) => translate(0, rectangleHeight / 24 * d.from))
       .attr('width', rectangleWidth)
       .attr('height', d => rectangleHeight / 24 * (d.to - d.from))
       .classed('rectangle', true)
-      .classed('highlighted', d => d.tags.includes('굳'))
-    const gDayTitles = gDayForegroundLayer.selectAll('text').data(d => d).enter().append('text');
-    gDayTitles.attr('transform', (d, i) => translate(rectangleWidth / 2, rectangleHeight / 24 * (d.from + (d.to - d.from) / 2)))
+      .classed('research', d => d.tags.includes('연구'))
+      .classed('joy', d => d.tags.includes('유흥'))
+      .classed('sleep', d => d.tags.includes('잠'))
+      .classed('personal', d => d.tags.includes('개인'))
+      .classed('productivity', d => d.tags.includes('생산성'))
+      .classed('nalida', d => d.tags.includes('날리다'))
+      .classed('leisure', d => d.tags.includes('여가'))
+      .classed('hcil', d => d.tags.includes('HCIL'))
+      .classed('exceptional', d => d.tags.includes('예외'))
+    const gDayTitles = gDayForegroundLayer.selectAll('text').data(d => d.records).enter().append('text');
+    gDayTitles.attr('transform', (d, i) => translate(rectangleWidth / 2, rectangleHeight / 24 * (d.from + (d.to - d.from) / 2) + 6))
       .style('text-anchor', 'middle')
-      .text(d => d.title)
+      .text(d => (d.to - d.from) >= 0.75 ? d.title: '')
+    
+      const gDayMeta = gDay.append('g').append('text');
+      gDayMeta.attr('transform', translate(rectangleWidth / 2, metaHeight / 2))
+        .style('text-anchor', 'middle')
+        .text(d => d.title)
+
   }
 
 }

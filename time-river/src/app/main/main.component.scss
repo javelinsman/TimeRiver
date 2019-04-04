@@ -7,8 +7,15 @@
 }
 :host /deep/ .rectangle {
     fill: darken($light, 10%);
+    stroke: lighten($dark, 45%);
 
-    &.highlighted {
-        fill: lighten($primary, 35%);
-    }
+    &.research { fill: lighten($primary, 35%); }
+    &.hcil:not(.research) { fill: lighten($primary, 45%); }
+    &.joy { fill: lighten($danger, 25%); }
+    &.sleep { fill: lighten($secondary, 25%); }
+    &.personal { fill: lighten($success, 25%); }
+    &.productivity { fill: lighten($success, 45%); }
+    &.nalida { fill: lighten($warning, 25%); }
+    &.leisure { fill: lighten($teal, 35%); }
+    &.exceptional { fill: $teal; }
 }

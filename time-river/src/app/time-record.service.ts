@@ -13,7 +13,8 @@ export class TimeRecordService {
 
   getDailyData() {
     return this.data.split('>').filter(s => s.trim().length).map(dayRaw => {
-      return dayRaw.split('\n').filter(s => s.trim().length).slice(1).map(taskRaw => {
+      const lines = dayRaw.split('\n').filter(s => s.trim().length);
+      const records = lines.slice(1).map(taskRaw => {
         const args = taskRaw.split(' ');
         return {
           from: +args[0],
@@ -22,6 +23,8 @@ export class TimeRecordService {
           tags: args.slice(4),
         }
       })
+      const title = lines[0];
+      return { title, records };
     });
   }
 }
