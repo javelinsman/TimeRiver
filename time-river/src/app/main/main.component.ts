@@ -41,6 +41,20 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.svg = this.container.append('svg');
     this.onResize();
     this.container.property('scrollLeft', this.container.property('scrollWidth'));
+    this.preventUnload();
+  }
+
+  preventUnload() {
+    window.onbeforeunload = function (e) {
+      var e = e || window.event;
+      var msg = "Do you really want to leave this page?"
+      // For IE and Firefox
+      if (e) {
+      e.returnValue = msg;
+      }
+      // For Safari / chrome
+      return msg;
+      };
   }
 
   onInfoUpdate() {
