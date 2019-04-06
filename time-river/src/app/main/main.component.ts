@@ -14,6 +14,7 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   dailyData: any;
   container: any;
+  svg: any;
 
   showInfoWindow: boolean;
   showColorWindow: boolean;
@@ -33,17 +34,27 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.container = d3.select(this.rectanglesDiv.nativeElement).append('svg');
+    this.container = d3.select(this.rectanglesDiv.nativeElement);
+    this.container.style('margin-top', '55px');
+    this.svg = this.container.append('svg');
+    this.onResize();
+  }
+
+  onResize() {
+    this.svg.attr('height', window.innerHeight * 0.95 - 55);
+    console.log(window.innerHeight);
     this.drawRectangles();
   }
 
   drawRectangles() {
-    const rectangleWidth = 150, rectangleHeight = 650;
-    const metaHeight = 70;
+    this.svg.selectAll('*').remove();
 
-    this.container.attr('width', rectangleWidth * this.dailyData.length + 50).attr('height', metaHeight + rectangleHeight)
+    const metaHeight = 40;
+    const rectangleWidth = 150, rectangleHeight = this.svg.attr('height') - metaHeight;
 
-    const gDay = this.container.selectAll('g').data(this.dailyData).enter().append('g');
+    this.svg.attr('width', rectangleWidth * this.dailyData.length + 50);
+
+    const gDay = this.svg.selectAll('g').data(this.dailyData).enter().append('g');
     gDay.attr('transform', (d, i) => translate(rectangleWidth * i, 0));
     const gDayBackgroundLayer = gDay.append('g');
     gDayBackgroundLayer.attr('transform', translate(0, metaHeight))
