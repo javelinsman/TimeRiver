@@ -8,11 +8,13 @@
       [(ngModel)]="timeRecordService.colorData"
       (input)="onDataChange()"
     ></textarea>
-    <div class="row">
-      <div *ngFor="let color of palette; index as i" class="col-3">
-        <div class="d-flex align-items-center">
-          <span style="width: 20px;" class="text-weight-bold mr-2 text-center">{{ i + 1 }}</span>
-          <div class="w-100" style="height: 15px;" [style.background-color]="color"></div>
+    <div class="overflow-x-hidden overflow-y-scroll styled-scroll h-50 p-0 m-0">
+      <div class="row">
+        <div *ngFor="let color of palette; index as i" class="col-sm-6 col-md-3">
+          <div class="d-flex align-items-center">
+            <span style="width: 20px;" class="text-weight-bold mr-2 text-center">{{ i + 1 }}</span>
+            <div class="w-100" style="height: 15px;" [style.background-color]="color"></div>
+          </div>
         </div>
       </div>
     </div>
