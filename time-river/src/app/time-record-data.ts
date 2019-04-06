@@ -1,4 +1,5 @@
-export const data = `5 ~ 11.5 잠 잠
+export const data = `> 3/6
+5 ~ 11.5 잠 잠
 3.5 ~ 5 랩 HCIL
 > 3/8
 0 ~ 1 과외 생산성
