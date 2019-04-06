@@ -3,6 +3,7 @@ import { TimeRecordService } from '../time-record.service';
 
 import * as d3 from 'd3';
 import { translate } from './utils';
+import { StateService } from '../state.service';
 
 @Component({
   selector: 'app-main',
@@ -14,14 +15,20 @@ export class MainComponent implements OnInit, AfterViewInit {
   dailyData: any;
   container: any;
 
+  showInfoWindow: boolean;
+  showColorWindow: boolean;
+
   @ViewChild('rectangles') rectanglesDiv: ElementRef<HTMLDivElement>;
 
   constructor(
     private timeRecordService: TimeRecordService,
+    private stateService: StateService,
   ) { }
 
   ngOnInit() {
     this.dailyData = this.timeRecordService.getDailyData();
+    this.stateService.showInfoWindowObservable.subscribe(b => this.showInfoWindow = b);
+    this.stateService.showColorWindowObservable.subscribe(b => this.showColorWindow = b);
     console.log(this.dailyData);
   }
 
