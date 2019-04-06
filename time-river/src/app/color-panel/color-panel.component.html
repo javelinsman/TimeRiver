@@ -1,3 +1,12 @@
-<p>
-  color-panel works!
-</p>
+<div class="card w-100 h-100">
+  <div class="card-body">
+    <h5 class="card-title">색상 입력</h5>
+    <p class="card-text">색상을 여기에 이렇게 입력하세요</p>
+    <textarea
+      #data
+      class="w-100 h-75"
+      [(ngModel)]="timeRecordService.colorData"
+      (input)="onDataChange()"
+    ></textarea>
+  </div>
+</div>

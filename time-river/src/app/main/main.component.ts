@@ -13,6 +13,8 @@ import { StateService } from '../state.service';
 export class MainComponent implements OnInit, AfterViewInit {
 
   dailyData: any;
+  colorData: any;
+
   container: any;
   svg: any;
 
@@ -28,6 +30,7 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.dailyData = this.timeRecordService.getDailyData();
+    this.colorData = this.timeRecordService.getColorData();
     this.stateService.showInfoWindowObservable.subscribe(b => this.showInfoWindow = b);
     this.stateService.showColorWindowObservable.subscribe(b => this.showColorWindow = b);
     console.log(this.dailyData);
@@ -42,6 +45,11 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   onInfoUpdate() {
     this.dailyData = this.timeRecordService.getDailyData();
+    this.drawRectangles();
+  }
+
+  onColorUpdate() {
+    this.colorData = this.timeRecordService.getColorData();
     this.drawRectangles();
   }
 
@@ -88,15 +96,16 @@ export class MainComponent implements OnInit, AfterViewInit {
       .attr('width', rectangleWidth)
       .attr('height', d => rectangleHeight / 24 * (d.to - d.from))
       .classed('rectangle', true)
-      .classed('research', d => d.tags.includes('연구'))
-      .classed('joy', d => d.tags.includes('유흥'))
-      .classed('sleep', d => d.tags.includes('잠'))
-      .classed('personal', d => d.tags.includes('개인'))
-      .classed('productivity', d => d.tags.includes('생산성'))
-      .classed('nalida', d => d.tags.includes('날리다'))
-      .classed('leisure', d => d.tags.includes('여가'))
-      .classed('hcil', d => d.tags.includes('HCIL'))
-      .classed('exceptional', d => d.tags.includes('예외'))
+      .style('fill', d => {
+        for (let i = this.colorData.length - 1; i >= 0; i-- ) {
+          const tagName = this.colorData[i][0];
+          const color = this.colorData[i][1];
+          if (d.tags.includes(tagName)) {
+            return color;
+          }
+        }
+        return this.timeRecordService.defaultColor;
+      })
     const gDayTitles = gDayForegroundLayer.selectAll('text').data(d => d.records).enter().append('text');
     gDayTitles.attr('transform', (d, i) => translate(rectangleWidth / 2, rectangleHeight / 24 * (d.from + (d.to - d.from) / 2) + 6))
       .style('text-anchor', 'middle')

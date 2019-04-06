@@ -1,14 +1,31 @@
 import { Injectable } from '@angular/core';
 import { data } from './time-record-data';
+import { colorData } from './time-record-color-data';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimeRecordService {
   data: any;
+  colorData: any;
+  colorPalette = [
+    'red',
+    'black'
+  ];
+  defaultColor = '#dae0e5';
 
-  constructor() { 
+  constructor() {
     this.data = data;
+    this.colorData = colorData;
+  }
+
+  getColorData() {
+    return this.colorData.split('\n').filter(s => s.trim().length && !s.startsWith('#')).map(line => {
+      const args = line.split(' ');
+      const tagName = args[0].trim();
+      const colorInd = +args[1] - 1;
+      return [tagName, this.colorPalette[colorInd]];
+    })
   }
 
   getDailyData() {
