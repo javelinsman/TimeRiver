@@ -8,6 +8,7 @@ import { TimeRecordService } from '../time-record.service';
 })
 export class ColorPanelComponent implements OnInit {
   updateTimestamp: number;
+  palette: any;
 
   @Output() update = new EventEmitter();
 
@@ -18,6 +19,7 @@ export class ColorPanelComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.palette = this.timeRecordService.colorPalette;
   }
   onDataChange() {
     const timestamp = Date.now();

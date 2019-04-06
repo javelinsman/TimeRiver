@@ -4,9 +4,17 @@
     <p class="card-text">색상을 여기에 이렇게 입력하세요</p>
     <textarea
       #data
-      class="w-100 h-75"
+      class="w-100 h-25"
       [(ngModel)]="timeRecordService.colorData"
       (input)="onDataChange()"
     ></textarea>
+    <div class="row">
+      <div *ngFor="let color of palette; index as i" class="col-3">
+        <div class="d-flex align-items-center">
+          <span style="width: 20px;" class="text-weight-bold mr-2 text-center">{{ i + 1 }}</span>
+          <div class="w-100" style="height: 15px;" [style.background-color]="color"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

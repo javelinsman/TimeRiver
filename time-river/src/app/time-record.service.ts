@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { data } from './time-record-data';
 import { colorData } from './time-record-color-data';
+import * as d3 from 'd3';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,13 @@ export class TimeRecordService {
   data: any;
   colorData: any;
   colorPalette = [
-    'red',
-    'black'
+    ...d3.schemeCategory10,
+    ...d3.schemeAccent,
+    ...d3.schemeSet1,
+    ...d3.schemeSet2,
+    ...d3.schemeSet3,
+    ...d3.schemePastel1,
+    ...d3.schemePastel2,
   ];
   defaultColor = '#dae0e5';
 
