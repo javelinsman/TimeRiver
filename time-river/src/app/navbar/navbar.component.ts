@@ -16,10 +16,12 @@ export class NavbarComponent implements OnInit {
   }
 
   showInfoWindow(){
+    this.stateService.showColorWindow = false;
     this.stateService.showInfoWindow = !this.stateService.showInfoWindow;
   }
 
   showColorWindow(){
+    this.stateService.showInfoWindow = false;
     this.stateService.showColorWindow = !this.stateService.showColorWindow;
   }
 

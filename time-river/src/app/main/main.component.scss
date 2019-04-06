@@ -1,4 +1,4 @@
-@import "../../styles.scss";
+@import "../theme.scss";
 
 :host /deep/ .background {
     fill: darken($light, 1%);

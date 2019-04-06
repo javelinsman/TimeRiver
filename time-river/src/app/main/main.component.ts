@@ -35,7 +35,6 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.container = d3.select(this.rectanglesDiv.nativeElement);
-    this.container.style('margin-top', '55px');
     this.svg = this.container.append('svg');
     this.onResize();
   }

@@ -1,3 +1,10 @@
-<p *ngIf="showInfoWindow">Info Window</p>
-<p *ngIf="showColorWindow">Color Window</p>
-<div #rectangles (window:resize)="onResize($event)"></div>
+<div class="row mx-0" [style.margin-top]="'55px'">
+    <div
+        #rectangles 
+        class="overflow-x-scroll styled-scroll"
+        [class.col-9]="showInfoWindow || showColorWindow"
+        (window:resize)="onResize($event)">
+    </div>
+    <app-info-panel *ngIf="showInfoWindow" class="col-3"></app-info-panel>
+    <app-color-panel *ngIf="showColorWindow" class="col-3"></app-color-panel>
+</div>
