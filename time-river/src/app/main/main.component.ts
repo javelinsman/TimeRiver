@@ -37,6 +37,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.container = d3.select(this.rectanglesDiv.nativeElement);
     this.svg = this.container.append('svg');
     this.onResize();
+    this.container.property('scrollLeft', this.container.property('scrollWidth'));
   }
 
   onInfoUpdate() {
