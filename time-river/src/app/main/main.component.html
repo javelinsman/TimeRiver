@@ -6,6 +6,6 @@
         [class.col-12]="!(showInfoWindow || showColorWindow)"
         (window:resize)="onResize($event)">
     </div>
-    <app-info-panel *ngIf="showInfoWindow" class="col-3"></app-info-panel>
-    <app-color-panel *ngIf="showColorWindow" class="col-3"></app-color-panel>
+    <app-info-panel *ngIf="showInfoWindow" class="col-3 p-0" (update)="onInfoUpdate()"></app-info-panel>
+    <app-color-panel *ngIf="showColorWindow" class="col-3 p-0"></app-color-panel>
 </div>

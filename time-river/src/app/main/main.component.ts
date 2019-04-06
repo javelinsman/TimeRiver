@@ -39,6 +39,11 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.onResize();
   }
 
+  onInfoUpdate() {
+    this.dailyData = this.timeRecordService.getDailyData();
+    this.drawRectangles();
+  }
+
   onResize() {
     this.svg.attr('height', window.innerHeight * 0.95 - 55);
     console.log(window.innerHeight);
