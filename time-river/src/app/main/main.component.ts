@@ -76,6 +76,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   drawRectangles() {
     this.svg.selectAll('*').remove();
 
+    if (!this.dailyData.length) { return; }
+
     const metaHeight = 40;
     const rectangleWidth = 150, rectangleHeight = this.svg.attr('height') - metaHeight;
 

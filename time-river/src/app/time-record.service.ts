@@ -38,15 +38,21 @@ export class TimeRecordService {
     return this.data.split('>').filter(s => s.trim().length).map(dayRaw => {
       const lines = dayRaw.split('\n').filter(s => s.trim().length);
       const records = lines.slice(1).map(taskRaw => {
-        const args = taskRaw.split(' ');
-        return {
-          from: +args[0],
-          to: +args[2],
-          title: args[3],
-          tags: args.slice(4),
+        const pattern = /\s*(?<from>[\d\.]+)\s*~\s*(?<to>[\d\.]+)\s*(?<content>[^#]+)\s*(?<tags>(#\S+\s*)*)*/;
+        const match = taskRaw.match(pattern);
+        if (match) {
+          const { from, to, content, tags } = match.groups;
+          return {
+            from: +from,
+            to: +to,
+            title: content.trim(),
+            tags: tags ? tags.split(' ').map(d => d.trim()).filter(d => d.startsWith('#')).map(d => d.slice(1)) : []
+          }
+        } else {
+          return null;
         }
-      })
-      const title = lines[0];
+      }).filter(d => d);
+      const title = lines[0].trim();
       return { title, records };
     });
   }
