@@ -116,7 +116,9 @@ export class MainComponent implements OnInit, AfterViewInit {
         for (let i = this.colorData.length - 1; i >= 0; i-- ) {
           const tagName = this.colorData[i][0];
           const color = this.colorData[i][1];
-          if (d.tags.includes(tagName)) {
+          if (tagName.startsWith('#') && d.tags.includes(tagName.slice(1))) {
+            return color;
+          } else if(d.title.includes(tagName)) {
             return color;
           }
         }

@@ -26,7 +26,7 @@ export class TimeRecordService {
   }
 
   getColorData() {
-    return this.colorData.split('\n').filter(s => s.trim().length && !s.startsWith('#')).map(line => {
+    return this.colorData.split('\n').filter(s => s.trim().length && !s.startsWith('/')).map(line => {
       const args = line.split(' ');
       const tagName = args[0].trim();
       const colorInd = +args[1] - 1;
