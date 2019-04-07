@@ -1,14 +1,33 @@
-<div class="card w-100 h-100">
-  <div class="card-body">
-    <h5 class="card-title">색상 입력</h5>
-    <p class="card-text">색상을 여기에 이렇게 입력하세요</p>
-    <textarea
-      #data
-      class="w-100 h-25"
-      [(ngModel)]="timeRecordService.colorData"
-      (input)="onDataChange()"
-    ></textarea>
-    <div class="overflow-x-hidden overflow-y-scroll styled-scroll h-50 p-0 m-0">
+<div class="d-flex w-100 h-100">
+  <div class="w-50 h-100">
+    <div class="card w-100 h-100">
+      <div class="card-body h-100">
+        <h5 class="card-title">색상 입력</h5>
+        <p class="card-text">어떤 칸을 어떤 색으로 칠할지 알려주세요.</p>
+        <div class="card">
+          <div class="card-body p-2">
+            <div class="d-flex flex-column small">
+              <code>#여가 5</code>
+              여가라는 태그가 달린 모든 기록을 5번 색으로 칠함
+              <code>과제 7</code>
+              제목에 "과제"가 포함된 모든 기록을 7번 색으로 칠함
+            </div>
+          </div>
+        </div>
+        <ul class="small">
+          <li class="ml-0">같은 기록이 여러 개의 규칙에 동시에 해당할 경우 가장 마지막의 규칙이 적용됩니다.</li>
+        </ul>
+        <textarea
+          #data
+          class="w-100 h-25 styled-scroll"
+          [(ngModel)]="timeRecordService.colorData"
+          (input)="onDataChange()"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="w-50 px-2">
+    <div class="overflow-x-hidden p-0 m-0">
       <div class="row">
         <div *ngFor="let color of palette; index as i" class="col-sm-6 col-md-3">
           <div class="d-flex align-items-center">

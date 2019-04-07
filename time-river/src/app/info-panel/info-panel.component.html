@@ -12,14 +12,14 @@
       </div>
     </div>
     <ul class="small">
-      <li class="ml-0">24시간 단위로 표현해주세요</li>
-      <li class="ml-0">아직은 13:30 이런 식으로는 못 씁니다... 실수 표현을 써주세요</li>
+      <li class="ml-0">시간을 표현할 땐 0 이상 24 이하의 실수를 사용해주세요.</li>
+      <li class="ml-0">11 ~ 3이나 22 ~ 25나 18:30~19:30 등의 표현은 지원하지 않습니다 ㅠㅠ 너그럽게 봐주세요</li>
     </ul>
     
     <p class="text-danger" *ngIf="timeRecordService.infoErrorMessage">{{ timeRecordService.infoErrorMessage }}</p>
     <textarea
       #data
-      class="w-100 h-75"
+      class="w-100 h-50 styled-scroll"
       [(ngModel)]="timeRecordService.data"
       (input)="onDataChange()"
     ></textarea>

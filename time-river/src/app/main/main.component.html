@@ -2,10 +2,10 @@
     <div
         #rectangles 
         class="overflow-x-scroll styled-scroll"
-        [class.col-9]="showInfoWindow || showColorWindow"
+        [class.col-7]="showInfoWindow || showColorWindow"
         [class.col-12]="!(showInfoWindow || showColorWindow)"
         (window:resize)="onResize()">
     </div>
-    <app-info-panel *ngIf="showInfoWindow" class="col-3 p-0" (update)="onInfoUpdate()"></app-info-panel>
-    <app-color-panel *ngIf="showColorWindow" class="col-3 p-0" (update)="onColorUpdate()"></app-color-panel>
+    <app-info-panel *ngIf="showInfoWindow" class="col-5 p-0" (update)="onInfoUpdate()"></app-info-panel>
+    <app-color-panel *ngIf="showColorWindow" class="col-5 p-0" (update)="onColorUpdate()"></app-color-panel>
 </div>
