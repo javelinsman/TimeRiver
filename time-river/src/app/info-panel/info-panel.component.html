@@ -1,7 +1,21 @@
 <div class="card w-100 h-100">
   <div class="card-body">
     <h5 class="card-title">정보 입력</h5>
-    <p class="card-text">정보를 여기에 이렇게 입력하세요</p>
+    <p class="card-text">아래와 같이 지난 일과를 기록해주세요.</p>
+    <div class="card">
+      <div class="card-body p-2">
+        <div class="d-flex flex-column small">
+          <code>> 몇월 며칠</code>
+          <code>10 ~ 14 오랜만에 산책 #여가 #즐거움</code>
+          <code>14.5 ~ 17 과제 #학교</code>
+        </div>
+      </div>
+    </div>
+    <ul class="small">
+      <li class="ml-0">24시간 단위로 표현해주세요</li>
+      <li class="ml-0">아직은 13:30 이런 식으로는 못 씁니다... 실수 표현을 써주세요</li>
+    </ul>
+    
     <p class="text-danger" *ngIf="timeRecordService.infoErrorMessage">{{ timeRecordService.infoErrorMessage }}</p>
     <textarea
       #data
