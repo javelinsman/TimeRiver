@@ -20,6 +20,8 @@ export class TimeRecordService {
   ];
   defaultColor = '#dae0e5';
 
+  infoErrorMessage: string;
+
   constructor() {
     this.data = data;
     this.colorData = colorData;
@@ -35,6 +37,7 @@ export class TimeRecordService {
   }
 
   getDailyData() {
+    this.infoErrorMessage = null;
     return this.data.split('>').filter(s => s.trim().length).map(dayRaw => {
       const lines = dayRaw.split('\n').filter(s => s.trim().length);
       const records = lines.slice(1).map(taskRaw => {
@@ -42,6 +45,10 @@ export class TimeRecordService {
         const match = taskRaw.match(pattern);
         if (match) {
           const { from, to, content, tags } = match.groups;
+          if (+from > +to) {
+            this.infoErrorMessage = `시간을 다시 확인해주세요: ${taskRaw}`;
+            return null;
+          }
           return {
             from: +from,
             to: +to,
