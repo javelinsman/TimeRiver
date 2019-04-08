@@ -4,6 +4,14 @@ import { TimeRecordService } from '../time-record.service';
 import * as d3 from 'd3';
 import { translate } from './utils';
 import { StateService } from '../state.service';
+import { ActivatedRoute } from '@angular/router';
+import base64url from 'base64url';
+import * as jsonUrl from 'json-url';
+import 'json-url/dist/browser/json-url-msgpack';
+import 'json-url/dist/browser/json-url-lzw';
+import 'json-url/dist/browser/json-url-lzma';
+import 'json-url/dist/browser/json-url-lzstring';
+import 'json-url/dist/browser/json-url-safe64';
 
 @Component({
   selector: 'app-main',
@@ -26,6 +34,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   constructor(
     private timeRecordService: TimeRecordService,
     private stateService: StateService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -33,7 +42,18 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.colorData = this.timeRecordService.getColorData();
     this.stateService.showInfoWindowObservable.subscribe(b => this.showInfoWindow = b);
     this.stateService.showColorWindowObservable.subscribe(b => this.showColorWindow = b);
-    console.log(this.dailyData);
+
+    const encodedData = this.route.snapshot.paramMap.get('data');
+    if (encodedData) {
+      try {
+        jsonUrl('lzw').decompress(encodedData).then(data => {
+          this.timeRecordService.data = data.dailyData;
+          this.timeRecordService.colorData = data.colorData;
+          this.onBothUpdate();
+        });
+      } catch {}
+    } else {
+    }
   }
 
   ngAfterViewInit() {
@@ -45,16 +65,16 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   preventUnload() {
-    window.onbeforeunload = function (e) {
-      var e = e || window.event;
-      var msg = "Do you really want to leave this page?"
+    window.onbeforeunload = (e) => {
+      const event = e || window.event;
+      const msg = 'Do you really want to leave this page?'
       // For IE and Firefox
-      if (e) {
-      e.returnValue = msg;
+      if (event) {
+        event.returnValue = msg;
       }
       // For Safari / chrome
       return msg;
-      };
+    };
   }
 
   onInfoUpdate() {
@@ -63,6 +83,12 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   onColorUpdate() {
+    this.colorData = this.timeRecordService.getColorData();
+    this.drawRectangles();
+  }
+
+  onBothUpdate() {
+    this.dailyData = this.timeRecordService.getDailyData();
     this.colorData = this.timeRecordService.getColorData();
     this.drawRectangles();
   }
@@ -79,26 +105,27 @@ export class MainComponent implements OnInit, AfterViewInit {
     if (!this.dailyData.length) { return; }
 
     const metaHeight = 40;
-    const rectangleWidth = 150, rectangleHeight = this.svg.attr('height') - metaHeight;
+    const rectangleWidth = 150;
+    const rectangleHeight = this.svg.attr('height') - metaHeight;
 
     this.svg.attr('width', rectangleWidth * this.dailyData.length + 50);
 
     const gDay = this.svg.selectAll('g').data(this.dailyData).enter().append('g');
     gDay.attr('transform', (d, i) => translate(rectangleWidth * i, 0));
     const gDayBackgroundLayer = gDay.append('g');
-    gDayBackgroundLayer.attr('transform', translate(0, metaHeight))
+    gDayBackgroundLayer.attr('transform', translate(0, metaHeight));
     const gDayBackgrounds = gDayBackgroundLayer.append('rect')
       .attr('width', rectangleWidth).attr('height', rectangleHeight)
-      .classed('background', true)
+      .classed('background', true);
     const gDayBackgroundTickLayer = gDayBackgroundLayer.append('g');
     const gDayTicks = gDayBackgroundTickLayer.selectAll('text').data(Array.from(Array(23)).map((_, i) => i + 1)).enter().append('g');
     gDayTicks
       .attr('transform', d => translate(0, d / 24 * rectangleHeight))
-      .classed('timetick', true)
+      .classed('timetick', true);
     gDayTicks.append('line')
-      .attr('x1', 20).attr('x2', rectangleWidth / 2 - 10).attr('y1', 0).attr('y2', 0)
+      .attr('x1', 20).attr('x2', rectangleWidth / 2 - 10).attr('y1', 0).attr('y2', 0);
     gDayTicks.append('line')
-      .attr('x1', rectangleWidth / 2 + 10).attr('x2', rectangleWidth - 20).attr('y1', 0).attr('y2', 0)
+      .attr('x1', rectangleWidth / 2 + 10).attr('x2', rectangleWidth - 20).attr('y1', 0).attr('y2', 0);
     const gDayTickTexts = gDayTicks.append('text');
     gDayTickTexts
       .attr('transform', d => translate(rectangleWidth / 2, 4))
@@ -106,7 +133,7 @@ export class MainComponent implements OnInit, AfterViewInit {
       .style('text-anchor', 'middle')
       .text(d => d);
     const gDayForegroundLayer = gDay.append('g');
-    gDayForegroundLayer.attr('transform', translate(0, metaHeight))
+    gDayForegroundLayer.attr('transform', translate(0, metaHeight));
     const gDayRects = gDayForegroundLayer.selectAll('rect').data(d => d.records).enter().append('rect');
     gDayRects.attr('transform', (d, i) => translate(0, rectangleHeight / 24 * d.from))
       .attr('width', rectangleWidth)
@@ -118,21 +145,21 @@ export class MainComponent implements OnInit, AfterViewInit {
           const color = this.colorData[i][1];
           if (tagName.startsWith('#') && d.tags.includes(tagName.slice(1))) {
             return color;
-          } else if(d.title.includes(tagName)) {
+          } else if (d.title.includes(tagName)) {
             return color;
           }
         }
         return this.timeRecordService.defaultColor;
-      })
+      });
     const gDayTitles = gDayForegroundLayer.selectAll('text').data(d => d.records).enter().append('text');
     gDayTitles.attr('transform', (d, i) => translate(rectangleWidth / 2, rectangleHeight / 24 * (d.from + (d.to - d.from) / 2) + 6))
       .style('text-anchor', 'middle')
-      .text(d => (d.to - d.from) >= 0.75 ? d.title: '')
-    
-      const gDayMeta = gDay.append('g').append('text');
-      gDayMeta.attr('transform', translate(rectangleWidth / 2, metaHeight / 2))
+      .text(d => (d.to - d.from) >= 0.75 ? d.title : '');
+
+    const gDayMeta = gDay.append('g').append('text');
+    gDayMeta.attr('transform', translate(rectangleWidth / 2, metaHeight / 2))
         .style('text-anchor', 'middle')
-        .text(d => d.title)
+        .text(d => d.title);
 
   }
 

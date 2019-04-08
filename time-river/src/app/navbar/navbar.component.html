@@ -7,12 +7,20 @@
     <div class="navbar-nav">
       <p
         class="nav-item nav-link text-as-button text-secondary mx-2 my-0 p-0"
+        (click)="changeExampleData()"
+      >다른 예시 보기</p>
+      <p
+        class="nav-item nav-link text-as-button text-secondary mx-2 my-0 p-0"
         (click)="showInfoWindow()"
       >정보 입력</p>
       <p
         class="nav-item nav-link text-as-button text-secondary mx-2 my-0 p-0"
         (click)="showColorWindow()"
       >색상 정보</p>
+      <b><p
+        class="nav-item nav-link text-as-button text-secondary mx-2 my-0 p-0"
+        (click)="showSaveWindow()"
+      >저장</p></b>
     </div>
   </div>
 </nav>
